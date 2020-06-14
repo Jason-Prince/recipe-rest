@@ -1,0 +1,12 @@
+POST http://localhost:4000/recipes/create
+Content-Type: application/json
+
+{
+    "name": "hope this works",
+    "serving": 2,
+    "cookTime": "All day",
+    "instruction": "Just order out instead"
+}
+
+###
+GET http://localhost:4000/recipes/get
