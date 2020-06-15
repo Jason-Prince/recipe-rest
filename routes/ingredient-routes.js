@@ -10,11 +10,12 @@ router.route("/create/:recipeId").post(async (req, res, next) => {
   const { name, amount } = req.body;
   const { recipeId } = req.params;
   try {
-    const newIngredient = new Ingredient({ name, amount, recipeId });
-    await newIngredient.save();
-    const updatedRecipe = await Recipe.findById(recipeId);
-    updatedRecipe.ingredientId.push(newIngredient._id);
-    res.status(201).json(updatedRecipe);
+    const recipe = await Recipe.findById(recipeId);
+    const ingredient = new Ingredient({ name, amount, recipeId });
+    await ingredient.save();
+    recipe.ingredientId.push(ingredient);
+    await recipe.save();
+    res.status(201).json(ingredient);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

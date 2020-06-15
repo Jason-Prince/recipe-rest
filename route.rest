@@ -4,18 +4,17 @@ POST http://localhost:4000/recipes/create
 Content-Type: application/json
 
 {
-    "name": "hope this works",
+    "name": "hope this works2",
     "serving": 2,
     "cookTime": "All day",
-    "instruction": "Just order out instead",
-    "ingredientId": []
+    "instruction": "Just order out instead"
 }
 
 ###
 GET http://localhost:4000/recipes/get
 
 ###
-GET http://localhost:4000/recipes/get/5ee6cb54ea72e64914742efc
+GET http://localhost:4000/recipes/get/5ee71cc55c37435550659413
 
 ###
 PATCH http://localhost:4000/recipes/update/5ee52915d1ef5e4b68173b6d
@@ -34,11 +33,11 @@ DELETE http://localhost:4000/recipes/delete/5ee52915d1ef5e4b68173b6d
 
 // Ingredient endpoints
 ###
-POST http://localhost:4000/ingredients/create/5ee6cb54ea72e64914742efc
+POST http://localhost:4000/ingredients/create/5ee71cc55c37435550659413
 Content-Type: application/json
 
 {
-    "name": "omga21212",
+    "name": "omga123456789abcdef",
     "amount": "2 pinches"
 }
 
