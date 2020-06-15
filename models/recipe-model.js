@@ -15,7 +15,7 @@ const recipeSchema = new mongoose.Schema(
     ],
   },
   {
-    collection: "recipe",
+    collection: "Recipes",
   }
 );
 

@@ -10,9 +10,9 @@ router.route("/create/:recipeId").post(async (req, res, next) => {
   const { name, amount } = req.body;
   const { recipeId } = req.params;
   try {
-    const recipe = await Recipe.findById(recipeId);
     const ingredient = new Ingredient({ name, amount, recipeId });
     await ingredient.save();
+    const recipe = await Recipe.findById(recipeId);
     recipe.ingredientId.push(ingredient);
     await recipe.save();
     res.status(201).json(ingredient);
@@ -31,43 +31,33 @@ router.route("/get").get(async (req, res, next) => {
 });
 
 router.route("/get/:ingredientId").get(async (req, res, next) => {
+  const { ingredientId } = req.params;
   try {
-    const { ingredientId } = req.params;
-    const ingredient = await Ingredient.findById(
-      ingredientId,
-      (error, data) => {
-        res.status(200).json(data);
-      }
-    );
-    console.log(`Ingredient: ${ingredient}`);
+    const ingredient = await Ingredient.findById(ingredientId);
+    res.status(200).json(ingredient);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
 router.route("/update/:ingredientId").patch(async (req, res, next) => {
+  const { body } = req;
+  const { ingredientId } = req.params;
   try {
-    const { body } = req;
-    const { ingredientId } = req.params;
-    const updatedIngredient = await Ingredient.findByIdAndUpdate(
-      ingredientId,
-      { $set: body },
-      (error, data) => {
-        res.status(200).json(data);
-      }
-    );
-    res.json(updatedIngredient);
+    const updatedIngredient = await Ingredient.findByIdAndUpdate(ingredientId, {
+      $set: body,
+    });
+    res.status(200).json(updatedIngredient);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
 router.route("/delete/:ingredientId").delete(async (req, res, next) => {
+  const { ingredientId } = req.params;
   try {
-    const { ingredientId } = req.params;
-    await Ingredient.findByIdAndRemove(ingredientId, (error, data) => {
-      res.json({ message: "Deleted ingredient" });
-    });
+    await Ingredient.findByIdAndRemove(ingredientId);
+    res.json({ message: "Deleted ingredient" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
