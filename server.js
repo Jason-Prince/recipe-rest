@@ -23,6 +23,7 @@ db.once("open", () => console.log("Connected to Database"));
 
 // Express
 const app = express(); // Initialize express as app
+// Not sure if I need cors when using heroku
 app.use(cors()); // Allows Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: false })); // Pass data from forms to req.body
