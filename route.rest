@@ -17,7 +17,7 @@ GET http://localhost:4000/recipes/get
 GET http://localhost:4000/recipes/get/5ee731b64a238e324cab2c96
 
 ###
-PATCH http://localhost:4000/recipes/update/5ee731b64a238e324cab2c96
+PATCH http://localhost:4000/recipes/update/5ee78b78cbd5b652fcd13e00
 Content-Type: application/json
 
 {
@@ -33,11 +33,11 @@ DELETE http://localhost:4000/recipes/delete/5ee732c44a238e324cab2c97
 
 // Ingredient endpoints
 ###
-POST http://localhost:4000/ingredients/create/5ee731b64a238e324cab2c96
+POST http://localhost:4000/ingredients/create/5ee78b78cbd5b652fcd13e00
 Content-Type: application/json
 
 {
-    "name": "omga234",
+    "name": "omga",
     "amount": "2 pinches"
 }
 
@@ -48,7 +48,7 @@ GET http://localhost:4000/ingredients/get
 GET http://localhost:4000/ingredients/get/5ee734d81cdb052834232923
 
 ###
-PATCH http://localhost:4000/ingredients/update/5ee734d81cdb052834232923
+PATCH http://localhost:4000/ingredients/update/5ee78b99cbd5b652fcd13e01
 Content-Type: application/json
 
 {
@@ -57,4 +57,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:4000/ingredients/delete/5ee734d81cdb052834232923
+DELETE http://localhost:4000/ingredients/delete/5ee7901ed278b42b5cb851da

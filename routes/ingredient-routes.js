@@ -44,10 +44,15 @@ router.route("/update/:ingredientId").patch(async (req, res, next) => {
   const { body } = req;
   const { ingredientId } = req.params;
   try {
-    const updatedIngredient = await Ingredient.findByIdAndUpdate(ingredientId, {
-      $set: body,
-    });
-    res.status(200).json(updatedIngredient);
+    await Ingredient.findByIdAndUpdate(
+      ingredientId,
+      {
+        $set: body,
+      },
+      (error, data) => {
+        res.status(200).json({ message: "Updated" });
+      }
+    );
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -56,6 +61,12 @@ router.route("/update/:ingredientId").patch(async (req, res, next) => {
 router.route("/delete/:ingredientId").delete(async (req, res, next) => {
   const { ingredientId } = req.params;
   try {
+    const ingredient = await Ingredient.findById(ingredientId);
+    const recipe = await Recipe.findById(ingredient.recipeId);
+    recipe.ingredientId = recipe.ingredientId.filter(
+      (id) => id != ingredientId
+    );
+    await recipe.save();
     await Ingredient.findByIdAndRemove(ingredientId);
     res.json({ message: "Deleted ingredient" });
   } catch (error) {

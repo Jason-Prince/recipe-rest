@@ -39,10 +39,15 @@ router.route("/update/:recipeId").patch(async (req, res, next) => {
   const { body } = req;
   const { recipeId } = req.params;
   try {
-    const updatedRecipe = await Recipe.findByIdAndUpdate(recipeId, {
-      $set: body,
-    });
-    res.status(200).json(updatedRecipe);
+    await Recipe.findByIdAndUpdate(
+      recipeId,
+      {
+        $set: body,
+      },
+      (error, data) => {
+        res.status(200).json({ message: "Updated" });
+      }
+    );
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
