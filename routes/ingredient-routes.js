@@ -2,15 +2,19 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 const Ingredient = require("../models/ingredient-model");
+const Recipe = require("../models/recipe-model");
 const express = require("express");
 const router = express.Router();
 
-router.route("/create").post(async (req, res, next) => {
+router.route("/create/:recipeId").post(async (req, res, next) => {
+  const { name, amount } = req.body;
+  const { recipeId } = req.params;
   try {
-    const { name, amount } = req.body;
-    const ingredient = new Ingredient({ name, amount });
-    const newIngredient = await ingredient.save();
-    res.status(201).json(newRecipe);
+    const newIngredient = new Ingredient({ name, amount, recipeId });
+    await newIngredient.save();
+    const updatedRecipe = await Recipe.findById(recipeId);
+    updatedRecipe.ingredientId.push(newIngredient._id);
+    res.status(201).json(updatedRecipe);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -19,30 +23,33 @@ router.route("/create").post(async (req, res, next) => {
 router.route("/get").get(async (req, res, next) => {
   try {
     const ingredient = await Ingredient.find();
-    res.status(200).json(recipe);
+    res.status(200).json(ingredient);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-router.route("/get/:id").get(async (req, res, next) => {
+router.route("/get/:ingredientId").get(async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const ingredient = await Ingredient.findById(id, (error, data) => {
-      res.status(200).json(data);
-    });
+    const { ingredientId } = req.params;
+    const ingredient = await Ingredient.findById(
+      ingredientId,
+      (error, data) => {
+        res.status(200).json(data);
+      }
+    );
     console.log(`Ingredient: ${ingredient}`);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-router.route("/update/:id").patch(async (req, res, next) => {
+router.route("/update/:ingredientId").patch(async (req, res, next) => {
   try {
     const { body } = req;
-    const { id } = req.params;
+    const { ingredientId } = req.params;
     const updatedIngredient = await Ingredient.findByIdAndUpdate(
-      id,
+      ingredientId,
       { $set: body },
       (error, data) => {
         res.status(200).json(data);
@@ -54,10 +61,10 @@ router.route("/update/:id").patch(async (req, res, next) => {
   }
 });
 
-router.route("/delete/:id").delete(async (req, res, next) => {
+router.route("/delete/:ingredientId").delete(async (req, res, next) => {
   try {
-    const { id } = req.params;
-    await Ingredient.findByIdAndRemove(id, (error, data) => {
+    const { ingredientId } = req.params;
+    await Ingredient.findByIdAndRemove(ingredientId, (error, data) => {
       res.json({ message: "Deleted ingredient" });
     });
   } catch (error) {
